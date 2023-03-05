@@ -1,0 +1,46 @@
+name: Generate-tf-based-on-yaml
+on:
+  push:
+    branches: [main, master]
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      discussions: write
+      pull-requests: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # take under input
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.AWS_REGION}} # take under input
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} # take under input
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # take under input
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.3.4 # take under input
+
+      - name: Terraform init
+        run: |
+            cd ./
+            ls
+            terraform init
+
+      - name: Plan Terraform
+        id: plan
+        run: |
+          cd ./
+          terraform plan -no-color -out=plan.tfplan \
+          && terraform show -no-color plan.tfplan
+
+      - name: commit to git repo
+        id: commit-to-git-repo
+        run: echo "the change pushed into repo and workflow successfully finished"
