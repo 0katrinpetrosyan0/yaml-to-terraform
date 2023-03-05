@@ -74,7 +74,7 @@ provider "aws" {
 # create an empty github repository
 module "github_repository" {
   source  = "dasmeta/repository/github"
-  version = "0.7.3"
+  version = "0.7.4"
 
   name              = var.git_repo
   create_repository = false
