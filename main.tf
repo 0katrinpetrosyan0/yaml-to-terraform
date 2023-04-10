@@ -100,7 +100,7 @@ resource "tfe_oauth_client" "this" {
 # create variable set
 module "aws_credentials_variable_set" {
   source  = "dasmeta/cloud/tfe//modules/variable-set"
-  version = "1.0.0"
+  version = "1.0.2"
 
   name = "test_aws_credentials"
   org  = var.terraform_cloud_org
@@ -123,7 +123,7 @@ module "aws_credentials_variable_set" {
 
 module "this" {
   source  = "dasmeta/cloud/tfe"
-  version = "1.0.0"
+  version = "1.0.2"
 
   for_each = { for key, item in yamldecode(
     file("./infra.yaml")
